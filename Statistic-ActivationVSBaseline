@@ -35,11 +35,6 @@ group = 'NHYoung';
 datum = '210913';
 
 %% CONDITION
-% Choose MODE 
-
-%--------------------------------------------------------------------------
-%PLEASE CHECK!
-
 analysisMODE = 1; %analysisMODE: 
                   %1: VIQuiet, 2: VINoise,
                   %3: STQuiet, 4: STNoise,
@@ -48,11 +43,9 @@ analysisMODE = 1; %analysisMODE:
                      
 ROIMODE = 2; %ROIMODE:
              %1: Frontal, 2: Central, %3: Parietal, %4: Occipital
-%--------------------------------------------------------------------------
 
 for foldup = 1:1
 %% ROI
-
 switch ROIMODE
     case 1
         ROI = 'Frontal';
@@ -69,7 +62,6 @@ switch ROIMODE
 end
 
 %% Task
-
 switch analysisMODE
     case 1
         Task = 'VIQuiet'; 
@@ -114,23 +106,17 @@ switch analysisMODE
 end
 end
 
+%--------------------------------------------------------------------------
 %% DATA I/O
-
-for foldup = 1:1
-%INPUT PLOT
+%--------------------------------------------------------------------------
 if analysisMODE<=2
     inputDataFolder  = ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\VI\' group '\'];
 else
     inputDataFolder  = ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\ST\' group '\'];
 end
 
-%OUTPUT DATA
 outputDataFolder = ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\MASTER\Stat\' group '\Data\'];
-
-%OUTPUT PLOT
 outputPlotFolder = ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\MASTER\Stat\' group '\Plot\'];
-end
-
 mkdir([outputDataFolder '\vsBaseline\' task '\']);
 mkdir([outputPlotFolder '\vsBaseline\' task '\']);
 
@@ -731,8 +717,9 @@ TSA_Subject20_avg = ft_timelockanalysis(cfg, TSA_Subject20);
                                           TSA_Subject14_avg, TSA_Subject15_avg, TSA_Subject16_avg, ...
                                           TSA_Subject17_avg, TSA_Subject18_avg, TSA_Subject19_avg, TSA_Subject20_avg);
 
-%% Pooling TFR Condition 1
-
+%--------------------------------------------------------------------------
+%% Pooling TFR
+%--------------------------------------------------------------------------
 % TFR_Cond_all
 cfg = [];
 TFR_Cond_all = ft_appendfreq(cfg,  TFR_Subject1,  TFR_Subject2,  TFR_Subject3, ...
@@ -741,18 +728,6 @@ TFR_Cond_all = ft_appendfreq(cfg,  TFR_Subject1,  TFR_Subject2,  TFR_Subject3, .
                                     TFR_Subject11, TFR_Subject12, TFR_Subject13, ...
                                     TFR_Subject14, TFR_Subject15, TFR_Subject16, ...
                                     TFR_Subject17, TFR_Subject18, TFR_Subject19, TFR_Subject20);
-
-% % % Baseline Normalisation
-% cfg = [];
-% cfg.baselinetype = 'db';
-% baselineTFREnd      = -0.8;
-% baselineTFRStart    = -0.2;
-% cfg.baseline = [baselineTFREnd baselineTFRStart];
-% TFR_Cond_all = ft_freqbaseline(cfg, TFR_Cond_all);
-% 
-% % TFR Average
-% cfg = [];
-% TFR_Cond_avg = ft_freqdescriptives(cfg, TFR_Cond_all);
 
 % % Baseline Normalisation
 cfg = [];
@@ -798,10 +773,10 @@ clear dataft_Subject1  dataft_Subject2  dataft_Subject3  dataft_Subject4  dataft
       
 return;
 
-%%
-
+%--------------------------------------------------------------------------
+%% Dividing Activation Period into same length with Baseline
+%--------------------------------------------------------------------------
 TFR_compare = TFR_Cond_all;
-
 % Length each section: ca. 0.6 sec, check number of TimeBin!
 
 cfg = [];
@@ -857,11 +832,9 @@ cfg.clustertail      = 0;
 cfg.alpha            = 0.025;
 cfg.numrandomization = 500;
 cfg.neighbours = [];
-
 % Length each section: 0.6 sec
 cfg.latency   = [0 0.6];
 cfg.frequency = 'all';
-
 ntrials = size(TFR_compare_a1.powspctrm,1);
 design  = zeros(2,2*ntrials);
 design(1,1:ntrials) = 1;
@@ -873,33 +846,7 @@ cfg.ivar    = 1;
 cfg.uvar    = 2;
 cfg.design  = design;
 cfg.ivar    = 1;
-
-%---
-
 [TFR_stat_a1] = ft_freqstatistics(cfg, TFR_compare_a1, TFR_compare_bl);
-
-    for foldup = 1:1
-        savingDataOn    = 1;
-        outputDataName  = ['TFR_stat_a1_' task];
-        eval([outputDataName '= TFR_stat_a1']);
-
-        if savingDataOn == 1
-            S.(outputDataName) = TFR_stat_a1;
-            save([outputDataFolder '\vsBaseline\' task '\' outputDataName '_' datum '.mat'], '-struct', 'S');
-            save([outputDataFolder '\vsBaseline\' task '\TFR_stat_a1.mat'], 'TFR_stat_a1');
-            savingDataOn = 0;
-        end
-        clear outputDataName
-        clear S
-    end
-
-end
-
-% % Indicate it's done
-% [ySample, FSample] = audioread ('JungleBookSample.wav');
-% sound(ySample, FSample);
-
-%return;
 
 % Calculating statistics for a2
 for foldup = 1:1
@@ -916,11 +863,9 @@ cfg.clustertail      = 0;
 cfg.alpha            = 0.025;
 cfg.numrandomization = 500;
 cfg.neighbours = [];
-
 % Length each section: 0.6 sec
 cfg.latency   = [0 0.6]%[0.025 0.625];
 cfg.frequency = 'all';
-
 ntrials = size(TFR_compare_a1.powspctrm,1);
 design  = zeros(2,2*ntrials);
 design(1,1:ntrials) = 1;
@@ -932,31 +877,7 @@ cfg.ivar    = 1;
 cfg.uvar    = 2;
 cfg.design  = design;
 cfg.ivar    = 1;
-
 [TFR_stat_a2] = ft_freqstatistics(cfg, TFR_compare_a2, TFR_compare_bl);
-        
-for foldup = 1:1
-    savingDataOn    = 1;
-	outputDataName  = ['TFR_stat_a2_' task];
-	eval([outputDataName '= TFR_stat_a2']);
-
-        if savingDataOn == 1
-            S.(outputDataName) = TFR_stat_a2;
-            save([outputDataFolder '\vsBaseline\' task '\' outputDataName '_' datum '.mat'], '-struct', 'S');
-            save([outputDataFolder '\vsBaseline\' task '\TFR_stat_a2.mat'], 'TFR_stat_a2');
-            savingDataOn = 0;
-        end
-        clear outputDataName
-        clear S
-	end
- 
-end
-
-% % Indicate it's done
-% [ySample, FSample] = audioread ('JungleBookSample.wav');
-% sound(ySample, FSample);
-
-%return;
 
 % Calculating statistic for a3
 for foldup = 1:1
@@ -973,11 +894,9 @@ cfg.clustertail      = 0;
 cfg.alpha            = 0.025;
 cfg.numrandomization = 500;
 cfg.neighbours = [];
-
 % Length each section: 0.6 sec
 cfg.latency   = [0 0.6];%[0.025 0.625];
 cfg.frequency = 'all';
-
 ntrials = size(TFR_compare_a1.powspctrm,1);
 design  = zeros(2,2*ntrials);
 design(1,1:ntrials) = 1;
@@ -989,33 +908,7 @@ cfg.ivar    = 1;
 cfg.uvar    = 2;
 cfg.design  = design;
 cfg.ivar    = 1;
-
-%---
-
 [TFR_stat_a3] = ft_freqstatistics(cfg, TFR_compare_a3, TFR_compare_bl);
-
-    for foldup = 1:1
-        savingDataOn    = 1;
-        outputDataName  = ['TFR_stat_a3_' task];
-        eval([outputDataName '= TFR_stat_a3']);
-
-        if savingDataOn == 1
-            S.(outputDataName) = TFR_stat_a3;
-            save([outputDataFolder '\vsBaseline\' task '\' outputDataName '_' datum '.mat'], '-struct', 'S');
-            save([outputDataFolder '\vsBaseline\' task '\TFR_stat_a3.mat'], 'TFR_stat_a3');
-            savingDataOn = 0;
-        end
-        clear outputDataName
-        clear S
-    end
-    
-end
-
-% % Indicate it's done
-% [ySample, FSample] = audioread ('JungleBookSample.wav');
-% sound(ySample, FSample);
-
-%return;
 
 % Calculating statistic for a4
 for foldup = 1:1
@@ -1032,11 +925,9 @@ cfg.clustertail      = 0;
 cfg.alpha            = 0.025;
 cfg.numrandomization = 500;
 cfg.neighbours = [];
-
 % Length each section: 0.6 sec
 cfg.latency   = [0 0.6];%[0.025 0.625];
 cfg.frequency = 'all';
-
 ntrials = size(TFR_compare_a1.powspctrm,1);
 design  = zeros(2,2*ntrials);
 design(1,1:ntrials) = 1;
@@ -1048,31 +939,7 @@ cfg.ivar    = 1;
 cfg.uvar    = 2;
 cfg.design  = design;
 cfg.ivar    = 1;
-
 [TFR_stat_a4] = ft_freqstatistics(cfg, TFR_compare_a4, TFR_compare_bl);
-
-    for foldup = 1:1
-        savingDataOn    = 1;
-        outputDataName  = ['TFR_stat_a4_' task];
-        eval([outputDataName '= TFR_stat_a4']);
-
-        if savingDataOn == 1
-            S.(outputDataName) = TFR_stat_a4;
-            save([outputDataFolder '\vsBaseline\' task '\' outputDataName '_' datum '.mat'], '-struct', 'S');
-            save([outputDataFolder '\vsBaseline\' task '\TFR_stat_a4.mat'], 'TFR_stat_a4');
-            savingDataOn = 0;
-        end
-        clear outputDataName
-        clear S
-    end
-    
-end
-
-% Indicate it's done
-[ySample, FSample] = audioread ('JungleBookSample.wav');
-sound(ySample, FSample);
-
-return;
 
 %---
 
@@ -1085,7 +952,7 @@ TFR_stat_a4.time = linspace(1.4, 2,    length(TFR_stat_a4.time));
 %---
 
 %-------------------------------------------------------------------------------------------------
-% PLOTING_SEG % PLOTING_SEG % PLOTING_SEG % PLOTING_SEG % PLOTING_SEG % PLOTING_SEG % PLOTING_SEG
+% Plotting
 %-------------------------------------------------------------------------------------------------
 
 % Plotting seg for a1
@@ -1102,9 +969,6 @@ cfg.zlim = [-4 4];
 cfg.ylim = [2 128];
 ft_singleplotTFR(cfg,TFR_stat_a1);
 end
-
-%---
-
 % Draw with outline
 for foldup = 1:1
 % Draw Full image
@@ -1112,14 +976,12 @@ for foldup = 1:1
 cfg = [];
 TFR_imagesc  = ft_freqbaseline(cfg, TFR_stat_a1);
 meanPow_TFR  = squeeze(mean(TFR_imagesc.stat(1,:,:), 1));
-
 figure;
 imagesc(TFR_stat_a1.time, TFR_stat_a1.freq, meanPow_TFR);
 caxis([-4 4]);
 ylim([2 128]);
 axis xy; 
 colorbar; colormap(jet(64));
-
 % Get Pixel for full image
 fig = gcf;
 figHandle       = get(gca,'Children');
@@ -1127,7 +989,6 @@ timeBin         = get(figHandle, 'XData');
 freqBin     	= get(figHandle, 'YData');
 powerBin(:,:)	= get(figHandle, 'CData'); %freqXtime
 close (gcf);
-
 % Draw again in contourf logarithmic
 figure;
 TFR_contourf_ori = contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1137,11 +998,9 @@ axis xy;
 colorbar; colormap(jet(64));
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 close (gcf);
-
 % Draw outline
 % Get Value for mask image 
 maskBin(:,:) = TFR_stat_a1.mask(1,:,:); %freqXtime
-
 % Draw again in contourf with mask as contour and in logarithmic
 figure;
 contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1154,36 +1013,6 @@ hold on
 contour(timeBin, freqBin, maskBin,'LevelList',1, 'LineWidth', 1, 'LineColor', 'k');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 end
-
-%---
-
-% Draw Segment Only
-for foldup = 1:1
-% % Add Mask bzw. segmentierung
-% for freqInd = 1: length(stat_a1.freq)
-%     for timeInd = 1:length(stat_a1.time)
-%         mask = stat_a1.mask(channelIndex,freqInd,timeInd);
-%         
-%         if mask == 0
-%             powerBin_seg(freqInd,timeInd) = NaN;
-%         else
-%             powerBin_seg(freqInd,timeInd) = powerBin(freqInd,timeInd);
-%         end
-%         
-%     end
-% end
-% 
-% % Draw again in contourf logarithmic
-% figure;
-% TFR_contourf_ori = contourf(timeBin, freqBin, powerBin_seg,64,'linestyle','none');
-% caxis([-4 4]);
-% ylim([2 128]);
-% axis xy; 
-% colorbar; colormap(jet(64));
-% set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-end
-end
-clear timeBin freqBin powerBin powerBin_seg maskBin
 
     % Plotting seg for a2
     for foldup = 1:1
@@ -1199,9 +1028,6 @@ clear timeBin freqBin powerBin powerBin_seg maskBin
     cfg.ylim = [2 128];
     ft_singleplotTFR(cfg,TFR_stat_a2);
     end
-
-    %---
-
     % Draw with outline
     for foldup = 1:1
     % Draw Full image
@@ -1209,14 +1035,12 @@ clear timeBin freqBin powerBin powerBin_seg maskBin
     cfg = [];
     TFR_imagesc  = ft_freqbaseline(cfg, TFR_stat_a2);
     meanPow_TFR  = squeeze(mean(TFR_imagesc.stat(1,:,:), 1));
-
     figure;
     imagesc(TFR_stat_a2.time, TFR_stat_a2.freq, meanPow_TFR);
     caxis([-4 4]);
     ylim([2 128]);
     axis xy; 
     colorbar; colormap(jet(64));
-
     % Get Pixel for full image
     fig = gcf;
     figHandle       = get(gca,'Children');
@@ -1224,7 +1048,6 @@ clear timeBin freqBin powerBin powerBin_seg maskBin
     freqBin     	= get(figHandle, 'YData');
     powerBin(:,:)	= get(figHandle, 'CData'); %freqXtime
     close (gcf);
-
     % Draw again in contourf logarithmic
     figure;
     TFR_contourf_ori = contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1234,11 +1057,9 @@ clear timeBin freqBin powerBin powerBin_seg maskBin
     colorbar; colormap(jet(64));
     set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
     close (gcf);
-
     % Draw outline
     % Get Value for mask image 
     maskBin(:,:) = TFR_stat_a2.mask(1,:,:); %freqXtime
-
     % Draw again in contourf with mask as contour and in logarithmic
     figure;
     contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1251,36 +1072,6 @@ clear timeBin freqBin powerBin powerBin_seg maskBin
     contour(timeBin, freqBin, maskBin,'LevelList',1, 'LineWidth', 1, 'LineColor', 'k');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
     set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
     end
-
-    %---
-
-%     % Draw Segment Only
-%     for foldup = 1:1
-%     % Add Mask bzw. segmentierung
-%     for freqInd = 1: length(stat_a12.freq)
-%         for timeInd = 1:length(stat_a12.time)
-%             mask = stat_a12.mask(channelIndex,freqInd,timeInd);
-%             
-%             if mask == 0
-%                 powerBin_seg(freqInd,timeInd) = NaN;
-%             else
-%                 powerBin_seg(freqInd,timeInd) = powerBin(freqInd,timeInd);
-%             end
-%             
-%         end
-%     end
-%     
-%     % Draw again in contourf logarithmic
-%     figure;
-%     TFR_contourf_ori = contourf(timeBin, freqBin, powerBin_seg,64,'linestyle','none');
-%     caxis([-4 4]);
-%     ylim([2 128]);
-%     axis xy; 
-%     colorbar; colormap(jet(64));
-%     set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-%     end
-    end
-    clear timeBin freqBin powerBin powerBin_seg maskBin
 
 % Plotting seg for a3
 for foldup = 1:1
@@ -1296,9 +1087,6 @@ cfg.zlim = [-4 4];
 cfg.ylim = [2 128];
 ft_singleplotTFR(cfg,TFR_stat_a3);
 end
-
-%---
-
 % Draw with outline
 for foldup = 1:1
 % Draw Full image
@@ -1306,14 +1094,12 @@ for foldup = 1:1
 cfg = [];
 TFR_imagesc  = ft_freqbaseline(cfg, TFR_stat_a3);
 meanPow_TFR  = squeeze(mean(TFR_imagesc.stat(1,:,:), 1));
-
 figure;
 imagesc(TFR_stat_a3.time, TFR_stat_a3.freq, meanPow_TFR);
 caxis([-4 4]);
 ylim([2 128]);
 axis xy; 
 colorbar; colormap(jet(64));
-
 % Get Pixel for full image
 fig = gcf;
 figHandle       = get(gca,'Children');
@@ -1321,7 +1107,6 @@ timeBin         = get(figHandle, 'XData');
 freqBin     	= get(figHandle, 'YData');
 powerBin(:,:)	= get(figHandle, 'CData'); %freqXtime
 close (gcf);
-
 % Draw again in contourf logarithmic
 figure;
 TFR_contourf_ori = contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1331,11 +1116,9 @@ axis xy;
 colorbar; colormap(jet(64));
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 close (gcf);
-
 % Draw outline
 % Get Value for mask image 
 maskBin(:,:) = TFR_stat_a3.mask(1,:,:); %freqXtime
-
 % Draw again in contourf with mask as contour and in logarithmic
 figure;
 contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1348,36 +1131,6 @@ hold on
 contour(timeBin, freqBin, maskBin,'LevelList',1, 'LineWidth', 1, 'LineColor', 'k');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 end
-
-%---
-
-% Draw Segment Only
-for foldup = 1:1
-% % Add Mask bzw. segmentierung
-% for freqInd = 1: length(stat_a3.freq)
-%     for timeInd = 1:length(stat_a3.time)
-%         mask = stat_a3.mask(channelIndex,freqInd,timeInd);
-%         
-%         if mask == 0
-%             powerBin_seg(freqInd,timeInd) = NaN;
-%         else
-%             powerBin_seg(freqInd,timeInd) = powerBin(freqInd,timeInd);
-%         end
-%         
-%     end
-% end
-% 
-% % Draw again in contourf logarithmic
-% figure;
-% TFR_contourf_ori = contourf(timeBin, freqBin, powerBin_seg,64,'linestyle','none');
-% caxis([-4 4]);
-% ylim([2 128]);
-% axis xy; 
-% colorbar; colormap(jet(64));
-% set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-end
-end
-clear timeBin freqBin powerBin powerBin_seg maskBin
 
 % Plotting seg for a4
 for foldup = 1:1
@@ -1393,25 +1146,19 @@ cfg.zlim = [-4 4];
 cfg.ylim = [2 128];
 ft_singleplotTFR(cfg,TFR_stat_a4);
 end
-
-%---
-
 % Draw with outline
 for foldup = 1:1
 % Draw Full image
 % Draw Again in imagesc
 cfg = [];
-
 TFR_imagesc  = ft_freqbaseline(cfg, TFR_stat_a4);
 meanPow_TFR  = squeeze(mean(TFR_imagesc.stat(1,:,:), 1));
-
 figure;
 imagesc(TFR_stat_a4.time, TFR_stat_a4.freq, meanPow_TFR);
 caxis([-4 4]);
 ylim([2 128]);
 axis xy; 
 colorbar; colormap(jet(64));
-
 % Get Pixel for full image
 fig = gcf;
 figHandle       = get(gca,'Children');
@@ -1419,7 +1166,6 @@ timeBin         = get(figHandle, 'XData');
 freqBin     	= get(figHandle, 'YData');
 powerBin(:,:)	= get(figHandle, 'CData'); %freqXtime
 close (gcf);
-
 % Draw again in contourf logarithmic
 figure;
 TFR_contourf_ori = contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1429,11 +1175,9 @@ axis xy;
 colorbar; colormap(jet(64));
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 close (gcf);
-
 % Draw outline
 % Get Value for mask image 
 maskBin(:,:) = TFR_stat_a4.mask(1,:,:); %freqXtime
-
 % Draw again in contourf with mask as contour and in logarithmic
 figure;
 contourf(timeBin, freqBin, powerBin,64,'linestyle','none');
@@ -1447,41 +1191,7 @@ contour(timeBin, freqBin, maskBin,'LevelList',1, 'LineWidth', 1, 'LineColor', 'k
 set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
 end
 
-%---
-
-% Draw Segment Only
-for foldup = 1:1
-% % Add Mask bzw. segmentierung
-% for freqInd = 1: length(stat_a4.freq)
-%     for timeInd = 1:length(stat_a4.time)
-%         mask = stat_a3.mask(channelIndex,freqInd,timeInd);
-%         
-%         if mask == 0
-%             powerBin_seg(freqInd,timeInd) = NaN;
-%         else
-%             powerBin_seg(freqInd,timeInd) = powerBin(freqInd,timeInd);
-%         end
-%         
-%     end
-% end
-% 
-% % Draw again in contourf logarithmic
-% figure;
-% TFR_contourf_ori = contourf(timeBin, freqBin, powerBin_seg,64,'linestyle','none');
-% caxis([-4 4]);
-% ylim([2 128]);
-% axis xy; 
-% colorbar; colormap(jet(64));
-% set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-end
-end
-clear timeBin freqBin powerBin powerBin_seg maskBin
-
 close all;
-
-%--------------------------------------------------------------------------------------------------------
-% PLOTING_FULL % PLOTING_FULL % PLOTING_FULL % PLOTING_FULL % PLOTING_FULL % PLOTING_FULL % PLOTING_FULL
-%--------------------------------------------------------------------------------------------------------
 
 % TFR and TSA Complett
 for foldup = 1:1
@@ -1504,9 +1214,6 @@ cfg = [];
 cfg.baselinetype = 'db';
 colorbartext = strcat('Power [dB re Baseline: ' , '(', num2str(baselineTFREnd), 's)', ' - ',  '(', num2str(baselineTFRStart), 's)', ']');
 zInfo = 'dB';
- 
-%HYPERPARAMETER
-% TODOLIST 7.5.2021
 cfg.baseline = [baselineTFREnd baselineTFRStart];
 TFR_imagesc  = ft_freqbaseline(cfg, TFR);
 meanPow_TFR  = squeeze(mean(TFR_imagesc.powspctrm(1,:,:), 1));
@@ -1541,7 +1248,6 @@ lowestYlimLog = 2;
 
    % FINAL PLOT TFR 
     figure;
-    
     % Draw TFR    
     contourf(timeBinIntrp, freqBinIntrp, powerIntrp,64,'LineStyle','none');
     xlim([prestimOffset poststimOffset]);
@@ -1554,19 +1260,11 @@ lowestYlimLog = 2;
     ylabel('Frequency [Hz]');
     title(['TFR: All Subject, ' task ', ' ROI]);
     set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-
     yl2 = yline (4,':'); 
     yl3 = yline (8,':'); 
     yl4 = yline(13,':');
     yl5 = yline(30,':'); 
 
-%    xline(0);
-%     xl1 = xline(baselineTFREnd,'--','Baseline','LabelHorizontalAlignment','right');
-%     xl1.FontSize = 9;
-%     xl2 = xline(baselineTFRStart,'--');
-     xl3 = xline(meanRT,'--','Mean RT','LabelHorizontalAlignment','right');
-%     xl3.FontSize = 9;    
-    
     hold on;
   
     % Draw outline 
@@ -1582,12 +1280,6 @@ lowestYlimLog = 2;
         losingTimeBack = size(timeBin,2)-size(maskBin_complete1,2);                           %Missing freqXtime-Matrix after maskBin
         maskBin_complete1 = cat(2,maskBin_complete1, (zeros(length(freqBin),losingTimeBack))); %Resulting maskBin_complete with full time
 
-        % Draw again in contourf with mask as contour and in logarithmic
-%         contour(timeBin, freqBin, maskBin_complete1,'LevelList',1, 'LineWidth', 0.5, 'LineColor', 'k', 'LineStyle', '-.');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
-%         set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-        end        
-%         hold on
- 
         %---
         
         % Draw outline for a2
@@ -1600,12 +1292,6 @@ lowestYlimLog = 2;
         maskBin_complete2 = cat(2,(zeros(length(freqBin),losingTimeFront)),maskBin);
         losingTimeBack = size(timeBin,2)-size(maskBin_complete2,2);                           %Missing freqXtime-Matrix after maskBin
         maskBin_complete2 = cat(2,maskBin_complete2, (zeros(length(freqBin),losingTimeBack))); %Resulting maskBin_complete with full time
-
-%         % Draw again in contourf with mask as contour and in logarithmic
-%         contour(timeBin, freqBin, maskBin_complete2,'LevelList',1, 'LineWidth', 0.5, 'LineColor', 'k', 'LineStyle', '-.');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
-%         set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-        end 
-%         hold on
             
         %---
 
@@ -1619,12 +1305,6 @@ lowestYlimLog = 2;
         maskBin_complete3 = cat(2,(zeros(length(freqBin),losingTimeFront)),maskBin);
         losingTimeBack = size(timeBin,2)-size(maskBin_complete3,2);                           %Missing freqXtime-Matrix after maskBin
         maskBin_complete3 = cat(2,maskBin_complete3, (zeros(length(freqBin),losingTimeBack))); %Resulting maskBin_complete with full time
- 
-%         % Draw again in contourf with mask as contour and in logarithmic
-%         contour(timeBin, freqBin, maskBin_complete3,'LevelList',1, 'LineWidth', 0.5, 'LineColor', 'k', 'LineStyle', '-.');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
-%         set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-        end
-%         hold on
 
         %---
         
@@ -1638,11 +1318,6 @@ lowestYlimLog = 2;
         maskBin_complete4 = cat(2,(zeros(length(freqBin),losingTimeFront)),maskBin);
         losingTimeBack = size(timeBin,2)-size(maskBin_complete4,2);                           %Missing freqXtime-Matrix after maskBin
         maskBin_complete4 = cat(2,maskBin_complete4, (zeros(length(freqBin),losingTimeBack))); %Resulting maskBin_complete with full time
-
-%         % Draw again in contourf with mask as contour and in logarithmic
-%         contour(timeBin, freqBin, maskBin_complete4,'LevelList',1, 'LineWidth', 0.5, 'LineColor', 'k', 'LineStyle', '-.');%LevelList = Threshold, by Binary Mask = 0 is all, 1 is the mask
-%         set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);       
-        end  
         
         %---
        
@@ -1656,22 +1331,3 @@ lowestYlimLog = 2;
             set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
             hold on
     end
-    
-    % SINGLEPLOT OF A CHANNEL ONLY TSA
-%    plot(TSA.time, (TSA.avg(1, :)*1.35)+13,'b'); % TSA-Plotting
-
-    %---
-    % SAVING Plot Option
-    savingPlotOn    = 1;
-    outputPlotName = ['TFR_AllSubs_Stat_' task '_' ROI '_' datum];
-    
-    if savingPlotOn == 1
-        saveas(gcf,[outputPlotFolder '\vsBaseline\' task '\' outputPlotName '.fig']);
-        saveas(gcf,[outputPlotFolder '\vsBaseline\' task '\' outputPlotName '.pdf']);
-        savingPlotOn = 0;
-    end
-    clear outputPlotName;
-    %---
-
-end
-clear timeBin freqBin powerBin maskBin maskBin_complete
