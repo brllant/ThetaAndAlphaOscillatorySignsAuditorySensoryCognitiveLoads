@@ -3,40 +3,36 @@
 % Stroop Task
 % Hannover, 28.4.2021
 % Updated: 7.5.2021, 13.9.2021
-% Brilliant
-% VIANNA 
+% Uploaded: 7.9.2023
+% Brilliant - VIANNA 
+
 % https://www.fieldtriptoolbox.org/tutorial/salzburg/
-% Within-trial experiments SINGLEPLOT
 
 %% SUBJECT INDEXING
 
-subject1 = 'ANRO34';
-subject2 = 'ARHE18';
-subject3 = 'AVHE42';
-subject4 = 'AYZE1';
-subject5 = 'DASH32';
-subject6 = 'EDKA28';
-subject7 = 'ELGA29';
-subject8 = 'HIGA12';
-subject9 = 'IDAR24';
-subject10 = 'ITAI51';
-subject11 = 'MICA2';
-subject12 = 'NIAK31';
-subject13 = 'NOSA22';
-subject14 = 'ORCO10';
-subject15 = 'RECO48';
-subject16 = 'REUT46';
-subject17 = 'STLI27';
-subject18 = 'TALK43';
-subject19 = 'YIYE21';
-subject20 = 'YUMO19';
-
+subject1 = 'XXXX01';
+subject2 = 'XXXX02';
+subject3 = 'XXXX03';
+subject4 = 'XXXX04';
+subject5 = 'XXXX05';
+subject6 = 'XXXX06';
+subject7 = 'XXXX07';
+subject8 = 'XXXX08';
+subject9 = 'XXXX09';
+subject10 = 'XXXX10';
+subject11 = 'XXXX11';
+subject12 = 'XXXX12';
+subject13 = 'XXXX13';
+subject14 = 'XXXX14';
+subject15 = 'XXXX15';
+subject16 = 'XXXX16';
+subject17 = 'XXXX17';
+subject18 = 'XXXX18';
+subject19 = 'XXXX19';
+subject20 = 'XXXX20';
 group = 'NHYoung';
 
-%--------------------------------------------------------------------------
-%PLEASE CHECK!
 datum = '210913';
-%--------------------------------------------------------------------------
 
 %% CONDITION
 % Choose MODE 
