@@ -1,5 +1,5 @@
-# OscillatorySignsAuditorySensoryCognitiveLoad
-MATLAB codes for the manuscript "Oscillatory signatures of auditory sensory and cognitive load reflect neuronal processing during complex listening".
+# Oscillatory Signatures of Auditory Sensory- and Cognitive Load During Complex Listening
+MATLAB codes for the manuscript **"Oscillatory signatures of auditory sensory and cognitive load reflect neuronal processing during complex listening".**
 
 Fieldtrip Toolbox is required.
 
