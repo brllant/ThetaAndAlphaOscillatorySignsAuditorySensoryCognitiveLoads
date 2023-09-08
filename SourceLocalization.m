@@ -2,15 +2,8 @@
 % Stroop Task
 % Hannover, 13.7.2021
 % Edited: 3.3.2023
-% Brilliant
-% VIANNA
-
-%https://www.fieldtriptoolbox.org/tutorial/beamformer/
-%https://www.fieldtriptoolbox.org/tutorial/headmodel_eeg_bem/
-%https://www.fieldtriptoolbox.org/workshop/natmeg/beamforming/#eeg-the-forward-model-and-lead-field-matrix
-%https://www.fieldtriptoolbox.org/tutorial/minimumnormestimate/
-%https://www.fieldtriptoolbox.org/example/make_leadfields_using_different_headmodels/
-%https://www.fieldtriptoolbox.org/workshop/oslo2019/forward_modeling/
+% Uploaded: 7.9.2023
+% Brilliant - VIANNA/MHH
 
 load ('J:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\MASTER\Beamforming\Data\RedBlueTFR0p5.mat');
 
