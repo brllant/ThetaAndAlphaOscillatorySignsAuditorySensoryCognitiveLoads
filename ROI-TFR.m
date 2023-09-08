@@ -2,7 +2,7 @@
 % Created: Hannover, 5.2.2021
 % Updated: 6.9.2021
 % Uploaded: 7.9.2023
-% Brilliant - VIANNA
+% Brilliant - VIANNA/MHH
 
 %--------------------------------------------------------------------------
 %% DATA I/O
@@ -11,10 +11,9 @@ subject                 = 'XXX00';
 preprocessedDataName 	= 'dataft_preprocessed_TFR';
 NoiseInd = 1; %NoiseInd: 1: In Quiet - 2: In Noise
 
-
-for ROIMODE = 1:3
+for ROIMODE = 1:3 
+  %ROIMODE                 = 1; %ROIMoide: 1: Frontal, 2: Central, %3: Parietal, %4: Occipital
   
-%     ROIMODE                 = 1; %ROIMoide: 1: Frontal, 2: Central, %3: Parietal, %4: Occipital
 datum                   = '210909';
 task                    = 'Vowel Identification';
 taskShort               = 'VI';
@@ -68,7 +67,6 @@ switch ROIMODE
         mkdir(outputPlotFolder);
 end
 
-
 load ([preprocessedDataFolder preprocessedDataName], '-mat' );
 dataft_aktuell = dataft_preprocessed_TFR;
 
@@ -117,7 +115,7 @@ switch ROIMODE
             channelName = 'Frontal'; 
             %channelName = ['Frontal (' pooledChannel1 ' ,' pooledChannel2 ' ,' pooledChannel3 ' ,' pooledChannel4 ')'];
             channelIndex = 1;
-        
+     
 %---
 
     case 2  
@@ -245,7 +243,6 @@ cfg = [];
 TSA_VI_avg = ft_timelockanalysis(cfg, TSA_VI_alltrls);
 
 %TSA Plotting
-
 % Topoplot
 % cfg = [];
 % cfg.layout      = 'eeg1010.lay';
@@ -254,7 +251,6 @@ TSA_VI_avg = ft_timelockanalysis(cfg, TSA_VI_alltrls);
 % % TOPOPLOT TSA VI
 % ft_topoplotER(cfg, TSA_VI); 
 % title(['TSA Topoplot: ' subject ', ' task '-' noiseInfo]);
-
 
 % Singleplot
 % SINGLEPLOT GESAMT OF A CHANNEL TSA+TRIALS
@@ -383,13 +379,11 @@ axis xy;
 xlabel('Time [s]');
 ylabel('Frequency [Hz]');
 colorbar; colormap(jet(64));
-
 fig = gcf;
 figHandle       = get(gca,'Children');
 timeBin         = get(figHandle, 'XData');
 freqBin     	= get(figHandle, 'YData');
 powerBin(:,:)	= get(figHandle, 'CData'); %freqXtime
-
 close(gcf);
    
 %---
@@ -410,24 +404,18 @@ lowestYlimLog = 2;
     ylabel('Frequency [Hz]');
     title(['TFR: ' subject ', ' task '-' noiseInfo ', ' channelName ', ' zInfo]);
     set(gca,'yscale','log','ytick',[2 4 8 13 20 25 30 50 75 100 125]);
-
     yl2 = yline (4,':'); 
     yl3 = yline (8,':'); 
     yl4 = yline(13,':');
     yl5 = yline(30,':'); 
-
     xline (0);
     xl1 = xline(baselineTFREnd,'--','Baseline','LabelHorizontalAlignment','right');
     xl1.FontSize = 9;
     xl2 = xline(baselineTFRStart,'--');
- 
     xl3 = xline(meanRT,'-','Mean RT','LabelHorizontalAlignment','right');
     xl3.FontSize = 9;    
-    
     hold on;   
-
     yyaxis right;
     plot(TSA_VI_avg.time, ((TSA_VI_avg.avg(channelIndex, :))), 'Color',[0,0.5,0.9], 'LineWidth',0.5);%*1.35)+13,'b'); % TSA-Plotting
     ylim ([-25 25]);
-    
     hold off;
