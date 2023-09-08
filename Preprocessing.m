@@ -2,14 +2,14 @@
 % Created: Hannover, 1.12.2020
 % Updated: 12.1.2021
 % Uploaded: 7.9.2023
-% Brilliant - VIANNA
+% Brilliant - VIANNA/MHH
 
 %--------------------------------------------------------------------------
 %% DATA I/O
 %--------------------------------------------------------------------------
 subject                 = 'XXXX00';
 rawDataName             = 'EEG_00_0';
-NoiseInd                = 2;           %NoiseInd for VI: 1: In Quiet - 2: In Noise
+NoiseInd                = 2; %NoiseInd for VI: 1: In Quiet - 2: In Noise
 datum                   = '210818';
 task                    = 'Vowel Identification';
 taskShort               = 'VI';
@@ -31,8 +31,7 @@ else if NoiseInd == 2
     end
 end
 
-rawDataFolder       = ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\EEG2Analyze\MACA_IL\MACA_IL_Source\MACA_IL_Source_BrainvisionConverted\' group '\' subject '\'];
-
+rawDataFolder       	= ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\EEG2Analyze\MACA_IL\MACA_IL_Source\MACA_IL_Source_BrainvisionConverted\' group '\' subject '\'];
 outputDataFolder	= ['D:\Brilliant_Dokumenten\Daten\Brilliant_Datenmaster\MarkersOfAuditoryCognitiveAging\Brilliant_Analysis\MACA_IL\' taskShort '\' group '\' subject '\' condDataFolder '\Preprocessing\Data\'];
 mkdir(outputDataFolder);
 
@@ -113,17 +112,12 @@ channelLabel = dataft_aktuell.label;
 cfg = [];
 cfg.headerfile  = headerfile;
 cfg.datafile    = datafile;
-
 cfg.trialdef.eventtype 	= 'Stimulus';
 cfg.trialdef.eventvalue = {'t100','t101','t1','t2'};
-
-
 prestimOffset   = -1; % in seconds
 poststimOffset  = 2;  % in seconds
-
 epochPaddingFront   = 1.5;
 epochPaddingBack    = 1.5;
-
 cfg.trialdef.prestim    = -prestimOffset + epochPaddingFront;
 cfg.trialdef.poststim   = poststimOffset + epochPaddingBack;
 cfg.trialfun = 'trialdefinition_MACA_IL_VI';
@@ -205,14 +199,12 @@ return;
 
 suspiciousCompTest = [1,];
 
-
 cfg = [];
 cfg.layout                      = 'eeg1010.lay';
-[suspiciousComp_temp_logic]     = ft_icabrowser(cfg, compICA_temp);
+[suspiciousComp_temp_logic]     = ft_icabrowser(cfg, compICA_temp); %Using ft_icabrowser, you have choosen which component to reject
+
 return;
 
-
-%Using ft_icabrowser, you have choosen which component to reject
 suspiciousComp_temp = find(suspiciousComp_temp_logic)';
 return;
 
@@ -224,10 +216,9 @@ cfg.topolabel       = compICA_temp.topolabel;
 cfg.channel         = {'all', '-FC6', '-EB', '-elB28', '-elB29', '-elB30', '-elB31', '-elB32', '-abdo', '-thor',  '-xyz', '-MKR', '-a1', '-a2', '-VEOR', '-VEOL', '-el064'};
 compICA             = ft_componentanalysis(cfg, dataft_aktuell);
 
-% Reject the ICA Components
 cfg = [];
 cfg.component   = suspiciousComp_temp;     %Passing the components
-dataft_ICA      = ft_rejectcomponent(cfg, compICA, dataft_aktuell);
+dataft_ICA      = ft_rejectcomponent(cfg, compICA, dataft_aktuell); % Reject the ICA Components
 
 %INSPECTION
 %---
@@ -507,7 +498,7 @@ return;
     baselineTFREnd      = -0.8;
     baselineTFRStart    = -0.2;
  
-	figure;
+    figure;
     
     cfg = [];
     cfg.baselinetype = 'db';
