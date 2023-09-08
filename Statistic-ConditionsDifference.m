@@ -3,12 +3,9 @@
 % Created: Hannover, 28.4.2021
 % Edited: 30.9.2021
 % Uploaded: 7.9.2023
-% Brilliant - VIANNA
-
-% https://www.fieldtriptoolbox.org/workshop/natmeg/statistics/
+% Brilliant - VIANNA/MHH
 
 %% SUBJECT INDEXING
- 
 subject1 = 'XXXX01';
 subject2 = 'XXXX02';
 subject3 = 'XXXX03';
