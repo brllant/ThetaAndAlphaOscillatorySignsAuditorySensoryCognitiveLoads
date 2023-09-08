@@ -2,7 +2,7 @@
 % Response Triggered
 % Created: Hannover, 30.11.2021
 % Uploaded: 7.9.2023
-% Brilliant - VIANNA
+% Brilliant - VIANNA/MHH
 
 %--------------------------------------------------------------------------
 %% DATA I/O
@@ -12,9 +12,8 @@ group                   = 'NHYoung';
 preprocessedDataName 	= 'dataft_preprocessed_TFR';
 NoiseInd                = 2; %NoiseInd: 1: In Quiet - 2: In Noise
 
-% ROI Automatitation start
 for ROIMODE = 1:4
-%    ROIMODE                 = 1; %ROIMoide: 1: Frontal, 2: Central, %3: Parietal, %4: Occipital
+    %ROIMODE                 = 1; %ROIMoide: 1: Frontal, 2: Central, %3: Parietal, %4: Occipital
 
 datum                   = '220303';
 task                    = 'Vowel Identification';
@@ -102,9 +101,13 @@ switch ROIMODE
         cfg.channel = pooledChannel4;
         dataft_frontal4 = ft_selectdata(cfg, dataft_aktuell);
         dataft_frontal4.label = {'frontalChannels'};
-
         dataft_frontal = dataft_frontal1;
-
+        dataft_frontal.trialinfo     = [dataft_frontal1.trialinfo; dataft_frontal2.trialinfo; ...
+                                       dataft_frontal3.trialinfo; dataft_frontal4.trialinfo];
+        dataft_frontal.trial         = [dataft_frontal1.trial, dataft_frontal2.trial, ...
+                                       dataft_frontal3.trial, dataft_ofrontal4.trial];
+        dataft_frontal.time          = [dataft_frontal1.time, dataft_frontal2.time, ...
+                                       dataft_frontal3.time, dataft_frontal4.time];
         dataft_aktuell = dataft_frontal;
             channelName = 'Frontal'; 
             %channelName = ['Frontal (' pooledChannel1 ' ,' pooledChannel2 ' ,' pooledChannel3 ' ,' pooledChannel4 ')'];
@@ -130,18 +133,14 @@ switch ROIMODE
         cfg.channel = pooledChannel4;
         dataft_central4 = ft_selectdata(cfg, dataft_aktuell);
         dataft_central4.label = {'centralChannels'};
-
         dataft_central = dataft_central1;
-
         dataft_central.trialinfo     = [dataft_central1.trialinfo; dataft_central2.trialinfo; ...
                                         dataft_central3.trialinfo; dataft_central4.trialinfo];
         dataft_central.trial         = [dataft_central1.trial, dataft_central2.trial, ...
                                         dataft_central3.trial, dataft_central4.trial];
         dataft_central.time          = [dataft_central1.time, dataft_central2.time, ...
                                         dataft_central3.time, dataft_central4.time];
-
         dataft_aktuell = dataft_central;
-
             channelName = 'Central';
             %channelName = ['Central (' pooledChannel1 ' ,' pooledChannel2 ' ,' pooledChannel3 ' ,' pooledChannel4 ' ,' pooledChannel5 ' ,' pooledChannel6 ')'];
             channelIndex = 1;
@@ -166,9 +165,7 @@ switch ROIMODE
         cfg.channel = pooledChannel4;
         dataft_parietal4 = ft_selectdata(cfg, dataft_aktuell);
         dataft_parietal4.label = {'parietalChannels'};
-
         dataft_parietal = dataft_parietal1;
-
         dataft_parietal.trialinfo     = [dataft_parietal1.trialinfo; dataft_parietal2.trialinfo; ...
                                         dataft_parietal3.trialinfo; dataft_parietal4.trialinfo];
         dataft_parietal.trial         = [dataft_parietal1.trial, dataft_parietal2.trial, ...
@@ -201,16 +198,13 @@ switch ROIMODE
         cfg.channel = pooledChannel4;
         dataft_occipital4 = ft_selectdata(cfg, dataft_aktuell);
         dataft_occipital4.label = {'occipitalChannels'};
-
         dataft_occipital = dataft_occipital1;
-
         dataft_occipital.trialinfo     = [dataft_occipital1.trialinfo; dataft_occipital2.trialinfo; ...
                                         dataft_occipital3.trialinfo; dataft_occipital4.trialinfo];
         dataft_occipital.trial         = [dataft_occipital1.trial, dataft_occipital2.trial, ...
                                         dataft_occipital3.trial, dataft_occipital4.trial];
         dataft_occipital.time          = [dataft_occipital1.time, dataft_occipital2.time, ...
                                         dataft_occipital3.time, dataft_occipital4.time];
-
         dataft_aktuell = dataft_occipital;
             
             channelName = 'Occipital';
