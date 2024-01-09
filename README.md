@@ -1,4 +1,4 @@
-# Oscillatory Signatures of Auditory Sensory- and Cognitive Load During Complex Listening
+# Theta and Alpha Oscillatory Signatures of Auditory Sensory- and Cognitive Loads During Complex Listening
 MATLAB codes for the manuscript **"Oscillatory signatures of auditory sensory and cognitive load reflect neuronal processing during complex listening".**
 
 Goal of the study was to identify osicllatory activities as objective markers (or signatures) of sensory- and cognitive loads during challening listening.
@@ -6,7 +6,7 @@ Goal of the study was to identify osicllatory activities as objective markers (o
 EEG-raw data was collected from Normal-Hearing Young Adult Listeners in Tel Aviv University. <br />
 The study was approved by the Institutional Review Board of Ethics as Tel Aviv University.
 
-The data was then converted using Brainstorm (https://neuroimage.usc.edu/brainstorm/) <br />
+Upon analysis, the data was first converted using Brainstorm (https://neuroimage.usc.edu/brainstorm/) <br />
 (François Tadel, Sylvain Baillet, John C Mosher, Dimitriois Pantazis, Richard M Leahy. Brainstrom: A User-Friendly Application for MEG/EEG Analysis. Computational Intelligence and Neuroscience, 2011;2011:879716)
 
 The further analysis were then done using Matlab and Fieldtrip Toolbox (https://www.fieldtriptoolbox.org/) <br />
