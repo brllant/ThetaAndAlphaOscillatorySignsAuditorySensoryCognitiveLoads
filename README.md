@@ -1,5 +1,5 @@
 # Theta and Alpha Oscillatory Signatures of Auditory Sensory- and Cognitive Loads During Complex Listening
-MATLAB codes for the manuscript **"Oscillatory signatures of auditory sensory and cognitive load reflect neuronal processing during complex listening".**
+MATLAB codes for the manuscript **"Theta and alpha oscillatory signatures of auditory sensory and cognitive loads during complex listening".**
 
 Goal of the study was to identify osicllatory activities as objective markers (or signatures) of sensory- and cognitive loads during challening listening.
 
